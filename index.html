@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMOYA | Elite Bioclimatic Housing & PropTech Ecosystem</title>
+    <meta name="description" content="DOMOYA combines Compressed Stabilized Earth Bricks (CSEB) with proprietary IoT technology in Benin. Save 30% on energy and manage assets securely.">
+    
+    <!-- Open Graph (SEO) -->
+    <meta property="og:title" content="DOMOYA | Premium Bioclimatic Smart Housing">
+    <meta property="og:description" content="Eco-construction and IoT ecosystem in Benin. Smart homes reducing energy costs by 30%.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CDNs: GSAP, ScrollTrigger, Lenis, Three.js, Lucide -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --bg-dark: #020306;
+            --bg-card: rgba(8, 12, 24, 0.65);
+            --bg-card-hover: rgba(14, 20, 38, 0.85);
+            --border-glass: rgba(212, 175, 55, 0.12);
+            --border-hover: rgba(212, 175, 55, 0.35);
+            
+            /* HSL Calibrated Colors */
+            --gold-primary: #D4AF37;
+            --gold-light: #F6E5A0;
+            --gold-glow: rgba(212, 175, 55, 0.18);
+            
+            --green-primary: #10B981;
+            --green-dark: #047857;
+            --green-glow: rgba(16, 185, 129, 0.15);
+            
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #475569;
+            
+            --font-headings: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 60%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+
+        /* Lenis Smooth Scroll Class */
+        html.lenis {
+            height: auto;
+        }
+        .lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        /* Ambient Blobs with movement */
+        .ambient-blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(140px);
+            opacity: 0.12;
+            transition: transform 10s ease-in-out infinite alternate;
+        }
+        .blob-1 {
+            top: -200px;
+            left: -200px;
+            background: var(--green-glow);
+            animation: moveBlob1 20s infinite alternate;
+        }
+        .blob-2 {
+            bottom: 20%;
+            right: -200px;
+            background: var(--gold-glow);
+            animation: moveBlob2 20s infinite alternate;
+        }
+
+        @keyframes moveBlob1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.1); }
+        }
+        @keyframes moveBlob2 {
+            0% { transform: translate(0, 0) scale(1.1); }
+            100% { transform: translate(-80px, -60px) scale(0.9); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Header */
+        header {
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            background: rgba(2, 3, 6, 0.75);
+            transition: var(--transition-smooth);
+        }
+
+        .header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-headings);
+            font-weight: 900;
+            font-size: 26px;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--gold-primary);
+        }
+
+        .logo-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--green-dark), var(--gold-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold-primary);
+            transition: var(--transition-smooth);
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-family: var(--font-headings);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-primary), #B59043);
+            color: #020306;
+            box-shadow: 0 4px 25px rgba(212, 175, 55, 0.22);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        #hero {
+            padding: 100px 0 140px;
+            position: relative;
+        }
+
+        .hero-wrap {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            background: rgba(212, 175, 55, 0.06);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 100px;
+            color: var(--gold-primary);
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-bottom: 28px;
+            font-family: var(--font-headings);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: var(--font-headings);
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--gold-primary), var(--green-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 540px;
+            line-height: 1.7;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 56px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 36px;
+        }
+
+        .stat-card h3 {
+            font-family: var(--font-headings);
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--gold-primary);
+            margin-bottom: 6px;
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 3D WebGL Canvas Visualizer */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .visual-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 28px;
+            background: rgba(6, 10, 20, 0.35);
+            border: 1px solid var(--border-glass);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .webgl-canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .canvas-overlay {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            background: rgba(2, 3, 6, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        /* Features Section */
+        #features {
+            padding: 120px 0;
+            background: rgba(4, 6, 11, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-headings);
+            font-size: 44px;
+            font-weight: 900;
+            margin-bottom: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header h2 span {
+            color: var(--gold-primary);
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 17px;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 36px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 44px 36px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green-primary), var(--gold-primary));
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) !important;
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.7), 0 0 25px var(--gold-glow);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feat-icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            margin-bottom: 32px;
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover .feat-icon-box {
+            background: var(--gold-primary);
+            color: #020306;
+            transform: scale(1.1);
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-headings);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 15.5px;
+            line-height: 1.65;
+        }
+
+        /* Interactive Calculator Section */
+        #calculator {
+            padding: 120px 0;
+        }
+
+        .calc-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .calc-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            padding: 48px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .input-group {
+            margin-bottom: 36px;
+        }
+
+        .input-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-family: var(--font-headings);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .input-label span:last-child {
+            color: var(--gold-primary);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #101622;
+            border-radius: 100px;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--gold-primary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 12px var(--gold-glow);
+            border: 2px solid #020306;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--gold-light);
+        }
+
+        .calc-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-top: 36px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 36px;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .result-item span {
+            display: block;
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+        }
+
+        .result-val {
+            font-family: var(--font-headings);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--green-primary);
+        }
+
+        /* Call To Action */
+        #cta {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(212, 175, 55, 0.04));
+            border: 1px solid var(--border-glass);
+            border-radius: 36px;
+            padding: 90px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+        }
+
+        .cta-box h2 {
+            font-family: var(--font-headings);
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-box p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 640px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            padding: 70px 0 44px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            background: #010204;
+        }
+
+        .footer-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 44px;
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 14px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            padding-top: 36px;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 992px) {
+            .hero-wrap, .calc-wrap {
+                grid-template-columns: 1fr;
+                gap: 60px;
+                text-align: center;
+            }
+            .hero-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-btns {
+                justify-content: center;
+            }
+            .hero-stats {
+                max-width: 540px;
+                margin: 0 auto;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none !important;
+            }
+            .header-action {
+                display: block;
+            }
+            h1 {
+                font-size: 38px;
+            }
+            .hero-desc {
+                font-size: 15px;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 32px;
+            }
+            .hero-btns {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .calc-results {
+                grid-template-columns: 1fr;
+            }
+            .visual-container {
+                height: 300px;
+            }
+            .logo {
+                font-size: 20px;
+            }
+            .logo-img {
+                width: 34px;
+                height: 34px;
+            }
+            #nav-demo-btn span {
+                display: none;
+            }
+            #nav-demo-btn {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Blobs with CSS animation -->
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container header-wrap">
+            <a href="#" class="logo">
+                <div class="logo-img">
+                    <i data-lucide="home" style="width: 22px; height: 22px; color: #020306;"></i>
+                </div>
+                DOMOYA<span>.</span>
+            </a>
+            <nav id="main-nav">
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#calculator" class="nav-link">ROI Calculator</a>
+            </nav>
+            <div class="header-action">
+                <a href="demo.html" class="btn btn-outline" id="nav-demo-btn">
+                    <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+                    <span>Interactive Demo</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container hero-wrap">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+                    Elite PropTech & Smart Housing Ecosystem
+                </div>
+                <h1 id="hero-title">The Future of <br><span>African Smart Housing</span></h1>
+                <p class="hero-desc" id="hero-description">
+                    DOMOYA merges eco-friendly bioclimatic design with proprietary IoT telemetry in Benin. Build high-standing, energy-efficient homes reducing utility costs by 30%.
+                </p>
+                <div class="hero-btns">
+                    <a href="demo.html" class="btn btn-primary" id="hero-cta-demo">
+                        <i data-lucide="play" style="width: 16px; height: 16px; fill: currentColor;"></i>
+                        Launch IoT Dashboard
+                    </a>
+                    <a href="#calculator" class="btn btn-outline" id="hero-cta-calc">
+                        Calculate Returns
+                    </a>
+                </div>
+                <div class="hero-stats" id="hero-stats-panel">
+                    <div class="stat-card">
+                        <h3>-30%</h3>
+                        <p>Utilities cost reduction</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>-60%</h3>
+                        <p>Eco energy footprint</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>100%</h3>
+                        <p>Diaspora transparency</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="visual-container" id="interactive-visual-container">
+                    <!-- Fallback Image if WebGL fails or is loading -->
+                    <img id="visual-fallback" src="african_modern_villa.png" alt="DOMOYA Premium Bioclimatic Villa" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; transition: opacity 0.6s ease; pointer-events: none;">
+                    
+                    <!-- WebGL Canvas for Three.js Procedural 3D Villa -->
+                    <canvas id="three-canvas" class="webgl-canvas" style="position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%;"></canvas>
+                    
+                    <div class="canvas-overlay" style="z-index: 3;">
+                        <i data-lucide="info" style="width: 12px; height: 12px; color: var(--gold-primary);"></i>
+                        Interactive 3D Grid — Drag to rotate
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Eco-Engineering Meets <span>Advanced IoT</span></h2>
+                <p>We combine raw local materials with smart engineering to deliver maximum energy efficiency, modern safety, and transparent asset management.</p>
+            </div>
+            
+            <div class="features-grid" id="features-cards-container">
+                <!-- Card 1 -->
+                <div class="feature-card">
+                    <div class="feat-icon-box">
+                        <i data-lucide="leaf" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <h3>Bioclimatic Insulation</h3>
+                    <p>Constructed using local Compressed Stabilized Earth Bricks (CSEB). Lowers construction grey energy by 60% and drops indoor temperatures by 4°C, reducing AC load.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="feature-card">
+                    <div class="feat-icon-box">
+                        <i data-lucide="cpu" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <h3>Proprietary IoT Kit</h3>
+                    <p>Low-cost ESP32 microcontrollers assembled locally and paired with a Django gateway. Automatically manages power loads and shuts down water on leakage alarm.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="feature-card">
+                    <div class="feat-icon-box">
+                        <i data-lucide="globe" style="width: 28px; height: 28px;"></i>
+                    </div>
+                    <h3>Diaspora Gateway</h3>
+                    <p>Transparent digital management portal. Allows African diaspora to easily co-invest in local developments and track rent cash flows securely via Mobile Money.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cost Calculator Section -->
+    <section id="calculator">
+        <div class="container calc-wrap">
+            <div class="calc-text">
+                <div class="hero-badge">
+                    <i data-lucide="calculator" style="width: 14px; height: 14px;"></i>
+                    FINANCIAL SIMULATOR
+                </div>
+                <h2>Calculate Your <br><span>Savings & Yields</span></h2>
+                <p class="hero-desc">
+                    Use our interactive ROI simulator to calculate how investing in DOMOYA's smart bioclimatic homes can lower your utility bills and generate attractive long-term rental yields.
+                </p>
+                <div class="stat-card" style="margin-top: 24px; display: flex; align-items: flex-start; gap: 16px; text-align: left;">
+                    <i data-lucide="trending-up" style="color: var(--green-primary); width: 32px; height: 32px; flex-shrink: 0; margin-top: 4px;"></i>
+                    <div>
+                        <h4 style="font-family: var(--font-headings); font-size: 18px; font-weight: 700; margin-bottom: 6px;">Guaranteed Efficiency</h4>
+                        <p style="font-size: 14px; color: var(--text-secondary);">DOMOYA villas typically payback their IoT R&D and hardware investment costs within the first 14 months of lease.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calc-panel" id="roi-calculator-panel">
+                <div class="input-group">
+                    <div class="input-label">
+                        <span>Monthly Utility Bill (Before DOMOYA)</span>
+                        <span id="bill-label">$150</span>
+                    </div>
+                    <input type="range" id="input-bill" min="50" max="500" value="150">
+                </div>
+                
+                <div class="input-group">
+                    <div class="input-label">
+                        <span>Property Investment Value</span>
+                        <span id="investment-label">$65,000</span>
+                    </div>
+                    <input type="range" id="input-investment" min="30000" max="150000" step="5000" value="65000">
+                </div>
+                
+                <div class="calc-results">
+                    <div class="result-item">
+                        <span>Yearly Utility Savings</span>
+                        <div class="result-val" id="result-savings">$540</div>
+                    </div>
+                    <div class="result-item">
+                        <span>Estimated Rental Yield</span>
+                        <div class="result-val" id="result-yield">8.4%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action -->
+    <section id="cta">
+        <div class="container">
+            <div class="cta-box" id="cta-interaction-box">
+                <h2>Join the PropTech Revolution</h2>
+                <p>Support sustainable development and experience the next generation of smart housing. Try our interactive dashboard or get in touch with our team.</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="demo.html" class="btn btn-primary">
+                        <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+                        Open Live Dashboard
+                    </a>
+                    <a href="mailto:dotonouabel@gmail.com" class="btn btn-outline">
+                        <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
+                        Contact Founder
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-wrap">
+                <a href="#" class="logo">
+                    <div class="logo-img">
+                        <i data-lucide="home" style="width: 22px; height: 22px; color: #020306;"></i>
+                    </div>
+                    DOMOYA<span>.</span>
+                </a>
+                <div style="display: flex; gap: 24px; font-size: 14px; color: var(--text-secondary);">
+                    <span>Cotonou, Benin</span>
+                </div>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 DOMOYA. All rights reserved. RCCM: RB/COT/25 A 109655.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // -------------------------------------------------------------
+        // LENIS SMOOTH SCROLL INITIALIZATION
+        // -------------------------------------------------------------
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        // Update ScrollTrigger on Lenis scroll
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+
+        // -------------------------------------------------------------
+        // GSAP & SCROLLTRIGGER ANIMATIONS
+        // -------------------------------------------------------------
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Entrance Timeline
+        const heroTimeline = gsap.timeline();
+        heroTimeline.from("#hero-title", {
+            y: 40,
+            opacity: 0,
+            duration: 1,
+            ease: "power4.out"
+        }).from("#hero-description", {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "-=0.6").from(".hero-btns", {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "-=0.6").from("#hero-stats-panel .stat-card", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out"
+        }, "-=0.6").from(".visual-container", {
+            scale: 0.9,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power4.out"
+        }, "-=1");
+
+        // Staggered Feature Cards Entrance
+        gsap.to(".feature-card", {
+            scrollTrigger: {
+                trigger: "#features",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            },
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power4.out"
+        });
+
+        // -------------------------------------------------------------
+        // THREE.JS PROCEDURAL 3D VILLA VISUALIZATION (With Safe WebGL Fallback)
+        // -------------------------------------------------------------
+        const container = document.getElementById('interactive-visual-container');
+        const canvas = document.getElementById('three-canvas');
+        const fallbackImg = document.getElementById('visual-fallback');
+        
+        try {
+            if (typeof THREE === 'undefined') {
+                throw new Error("Three.js library not loaded.");
+            }
+            
+            // Scene Setup
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2('#060a14', 0.015);
+
+            // Safe initial dimensions
+            let width = container.clientWidth || 400;
+            let height = container.clientHeight || 450;
+
+            // Camera Setup
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+            camera.position.set(10, 8, 12);
+            camera.lookAt(0, 1.5, 0);
+
+            // WebGL Renderer Setup
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Hide fallback image on successful initialization
+            if (fallbackImg) {
+                fallbackImg.style.opacity = '0';
+                setTimeout(() => {
+                    fallbackImg.style.display = 'none';
+                }, 600);
+            }
+
+            // Function to update dimensions dynamically
+            function updateRendererSize() {
+                const w = container.clientWidth || 400;
+                const h = container.clientHeight || 450;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+
+            // Resize Event Listener
+            window.addEventListener('resize', updateRendererSize);
+            window.addEventListener('load', () => {
+                setTimeout(updateRendererSize, 100);
+            });
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight('#D4AF37', 0.8);
+            dirLight.position.set(5, 10, 7);
+            scene.add(dirLight);
+
+            const pointLight = new THREE.PointLight('#10B981', 1.5, 20);
+            pointLight.position.set(0, 2, 0);
+            scene.add(pointLight);
+
+            // Grid Helper (Architectural Floor)
+            const gridHelper = new THREE.GridHelper(20, 20, '#D4AF37', '#10B981');
+            gridHelper.position.y = -0.5;
+            gridHelper.material.opacity = 0.12;
+            gridHelper.material.transparent = true;
+            scene.add(gridHelper);
+
+            // Procedural 3D Villa Group
+            const villaGroup = new THREE.Group();
+            scene.add(villaGroup);
+
+            // 1. Foundation Block
+            const groundGeo = new THREE.BoxGeometry(7, 0.3, 7);
+            const groundMat = new THREE.MeshStandardMaterial({
+                color: '#0e172a',
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.position.y = -0.15;
+            villaGroup.add(ground);
+
+            // 2. Glass-bioclimatic Room Meshes
+            const houseGeo = new THREE.BoxGeometry(5, 3, 5);
+            
+            const edges = new THREE.EdgesGeometry(houseGeo);
+            const lineMat = new THREE.LineBasicMaterial({ color: '#D4AF37', linewidth: 2 });
+            const wireframe = new THREE.LineSegments(edges, lineMat);
+            wireframe.position.y = 1.5;
+            villaGroup.add(wireframe);
+
+            // Semi-transparent wall glass
+            const glassMat = new THREE.MeshPhysicalMaterial({
+                color: '#10B981',
+                transparent: true,
+                opacity: 0.12,
+                roughness: 0.1,
+                transmission: 0.9,
+                thickness: 1.2
+            });
+            const house = new THREE.Mesh(houseGeo, glassMat);
+            house.position.y = 1.5;
+            villaGroup.add(house);
+
+            // 3. Solar Roof (Bioclimatic Incline)
+            const roofGeo = new THREE.BoxGeometry(5.4, 0.2, 5.4);
+            const roofMat = new THREE.MeshStandardMaterial({ color: '#090d16', roughness: 0.5 });
+            const roof = new THREE.Mesh(roofGeo, roofMat);
+            roof.position.set(0, 3.1, 0);
+            roof.rotation.x = 0.08;
+            villaGroup.add(roof);
+
+            // Solar panels mesh detail on roof
+            const panelGeo = new THREE.BoxGeometry(4.8, 0.05, 2);
+            const panelMat = new THREE.MeshStandardMaterial({
+                color: '#10B981',
+                emissive: '#047857',
+                emissiveIntensity: 0.3,
+                roughness: 0.2
+            });
+            const panel = new THREE.Mesh(panelGeo, panelMat);
+            panel.position.set(0, 3.25, 0.8);
+            panel.rotation.x = 0.08;
+            villaGroup.add(panel);
+
+            // 4. Moving IoT Energy Spheres
+            const sphereGeo = new THREE.SphereGeometry(0.12, 16, 16);
+            const sphereMat = new THREE.MeshBasicMaterial({ color: '#10B981' });
+            
+            const iotNodes = [];
+            const nodeCount = 5;
+
+            for (let j = 0; j < nodeCount; j++) {
+                const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+                sphere.position.set(
+                    (Math.random() - 0.5) * 4,
+                    0.2 + Math.random() * 2.5,
+                    (Math.random() - 0.5) * 4
+                );
+                villaGroup.add(sphere);
+                iotNodes.push({
+                    mesh: sphere,
+                    speedY: 0.01 + Math.random() * 0.015,
+                    amplitude: 0.5 + Math.random() * 1.5,
+                    angle: Math.random() * Math.PI
+                });
+            }
+
+            // Mouse Parallax & Interaction Logic
+            let mouseX = 0, mouseY = 0;
+            let targetRotationX = 0, targetRotationY = 0;
+
+            container.addEventListener('mousemove', (event) => {
+                const rect = container.getBoundingClientRect();
+                mouseX = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
+                mouseY = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
+                
+                targetRotationY = mouseX * 0.6;
+                targetRotationX = mouseY * 0.4;
+            });
+
+            container.addEventListener('touchmove', (event) => {
+                if (event.touches.length === 1) {
+                    const rect = container.getBoundingClientRect();
+                    mouseX = ((event.touches[0].clientX - rect.left) / container.clientWidth) * 2 - 1;
+                    mouseY = -((event.touches[0].clientY - rect.top) / container.clientHeight) * 2 + 1;
+                    targetRotationY = mouseX * 0.6;
+                    targetRotationX = mouseY * 0.4;
+                }
+            });
+
+            // Render & Animation Loop
+            const clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const elapsedTime = clock.getElapsedTime();
+
+                // Smooth rotation interpolation
+                villaGroup.rotation.y += (targetRotationY - villaGroup.rotation.y) * 0.05;
+                villaGroup.rotation.x += (targetRotationX - villaGroup.rotation.x) * 0.05;
+
+                // Idle auto-rotation when no mouse movement
+                if (Math.abs(mouseX) < 0.02 && Math.abs(mouseY) < 0.02) {
+                    villaGroup.rotation.y += 0.003;
+                }
+
+                // Animate IoT Nodes inside house
+                iotNodes.forEach((node) => {
+                    node.mesh.position.y += Math.sin(elapsedTime * 2 + node.angle) * 0.004;
+                    node.mesh.position.x += Math.cos(elapsedTime * 1.5 + node.angle) * 0.003;
+                });
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        } catch (error) {
+            console.warn("Three.js or WebGL not supported. Displaying static villa fallback:", error);
+            if (canvas) canvas.style.display = 'none';
+            if (fallbackImg) {
+                fallbackImg.style.opacity = '1';
+                fallbackImg.style.display = 'block';
+            }
+            const overlay = container.querySelector('.canvas-overlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
+        // -------------------------------------------------------------
+        // CALCULATOR LOGIC
+        // -------------------------------------------------------------
+        const billInput = document.getElementById('input-bill');
+        const investmentInput = document.getElementById('input-investment');
+        
+        const billLabel = document.getElementById('bill-label');
+        const investmentLabel = document.getElementById('investment-label');
+        
+        const resultSavings = document.getElementById('result-savings');
+        const resultYield = document.getElementById('result-yield');
+
+        function formatCurrency(val) {
+            return '$' + val.toLocaleString();
+        }
+
+        function calculateROI() {
+            const bill = parseInt(billInput.value);
+            const investment = parseInt(investmentInput.value);
+            
+            // Labels
+            billLabel.textContent = formatCurrency(bill);
+            investmentLabel.textContent = formatCurrency(investment);
+            
+            // Utility Savings: DOMOYA guarantees 30% reduction
+            const yearlySavings = Math.round(bill * 0.3 * 12);
+            resultSavings.textContent = formatCurrency(yearlySavings);
+            
+            // Rental Yield: Simulated dynamic rental yield based on location & investment optimization
+            const monthlyRent = (investment * 0.007) + (bill * 0.2); 
+            const annualRent = monthlyRent * 12;
+            const yieldPercentage = ((annualRent / investment) * 100).toFixed(1);
+            resultYield.textContent = yieldPercentage + '%';
+        }
+
+        billInput.addEventListener('input', calculateROI);
+        investmentInput.addEventListener('input', calculateROI);
+        
+        // Initial Calculation
+        calculateROI();
+    </script>
+</body>
+</html>

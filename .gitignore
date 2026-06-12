@@ -1,0 +1,17 @@
+# Ignore everything by default
+*
+
+# Allow directories
+!*/
+
+# Whitelist specific files for DOMOYA website deployment
+!index.html
+!demo.html
+!index_fr.html
+!demo_fr.html
+!african_modern_villa.png
+!domoya_logo_pro.png
+!Presentation_DOMOYA_EN.pdf
+!GUIDE_DEPLOIEMENT.md
+!MEMORY.md
+!.gitignore
